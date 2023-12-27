@@ -2,9 +2,9 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const path = require('path');
-const cors = require('cors');
-const bodyParser = require('body-parser'); // Add body-parser for parsing JSON in requests
+// const path = require('path');
+// const cors = require('cors');
+// const bodyParser = require('body-parser'); // Add body-parser for parsing JSON in requests
 
 const app = express();
 const server = http.createServer(app);
@@ -23,40 +23,35 @@ const users = {
 };
 
 // CORS middleware
-const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: '*',
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
+// app.use(cors(corsOptions));
 
 // Use bodyParser to parse JSON in requests
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 // Serve static files from the build directory
-app.use(express.static(path.join(__dirname, '../build')));
+// app.use(express.static(path.join(__dirname, '../build')));
 
 // External API endpoint for authentication
-app.post('/api/authenticate', (req, res) => {
-  const { username, key } = req.body;
+// app.post('/authenticate', (req, res) => {
+//   const { username, key } = req.body;
 
-  if (users[username] && users[username].key === key) {
-    res.status(200).json({ success: true, message: 'Authentication successful' });
-  } else {
-    res.status(401).json({ success: false, message: 'Authentication failed' });
-  }
-});
-
-// Handle requests to your app
-app.get('/api/someEndpoint', (req, res) => {
-  // Handle API logic
-});
+//   if (users[username] && users[username].key === key) {
+//     res.status(200).json({ success: true, message: 'Authentication successful' });
+//   } else {
+//     res.status(401).json({ success: false, message: 'Authentication failed' });
+//   }
+// });
 
 // Serve the React app for any other routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../build/index.html'));
+// });
 
 io.on('connection', (socket) => {
   console.log('A user connected');

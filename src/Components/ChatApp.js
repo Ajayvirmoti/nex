@@ -1,8 +1,7 @@
-// src/components/App.jsx
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://192.168.218.41:3001/'); // Replace with your server URL
+const socket = io('https://button-thirsty-celestite.glitch.me/'); // Replace with your server URL
 
 const ChatApp = () => {
   const [authenticated, setAuthenticated] = useState(false);
