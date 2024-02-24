@@ -19,15 +19,18 @@
 import React from 'react';
 import RegisterForm from './Components/RegisterForm/RegisterForm';
 import LoginForm from './Components/LoginForm/LoginForm';
-
+import Dashboard from './Components/Dashboard/Dashboard';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
 
 const App = () => {
   return (
-    <div className="app-container">
-      <RegisterForm />
-      <LoginForm />
-    </div>
+    <Routes>
+      
+      <Route path="/register" element={<RegisterForm />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
   );
 };
 

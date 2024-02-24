@@ -1,13 +1,26 @@
-// components/LoginForm/LoginForm.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
-
+// import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import styles from './LoginForm.css';
-
+// import { useNavigate } from 'react-router-dom';
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const history = useNavigate();
+
+  useEffect(() => {
+    const unregisterAuthObserver = auth.onAuthStateChanged((user) => {
+      setIsSignedIn(!!user);
+    });
+
+    return () => {
+      unregisterAuthObserver();
+    };
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -15,27 +28,43 @@ const LoginForm = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('Login successful!');
-      // Optionally, you can redirect the user to another page after successful login.
+      // Redirect to dashboard after successful login
+      history.push('/dashboard');
     } catch (error) {
       console.error('Login failed:', error.message);
     }
   };
 
   return (
-    <div className={styles.loginFormContainer}>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <label>
-          Email:
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </label>
-        <label>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </label>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <>
+      {
+        isSignedIn ? <Navigate to="/dashboard" /> : (
+          <div className={styles.loginForm}>
+            <h1>Login</h1>
+            <form onSubmit={handleLogin}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button type="submit">Login</button>
+            </form>
+            <p>
+              Don't have an account? <Link to="/signup">Sign up</Link>
+            </p>
+          </div>
+        )
+      }
+    </>
   );
 };
 

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
-
 import styles from './RegisterForm.css';
 
 const RegisterForm = () => {
